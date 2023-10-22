@@ -66,5 +66,4 @@ parsed_data = parse_csv(csv_filename)
 
 dates = parsed_data[0][0]
 amounts = parsed_data[0][2]
-reduced_data = reduce_months(dates,amounts,3)
-print(reduced_data[1])
+reduced_data = reduce_months(dates,amounts,1)

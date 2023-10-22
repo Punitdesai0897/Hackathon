@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 <style>
 #customFileInput {
   background-color: #4d81a3;
@@ -42,6 +41,65 @@ body {font-family: "Lato", sans-serif}
     align-items: center;
 justify-content: center;
 }
+.x-axis-title {
+     color:#666666;
+            text-align: center;
+            margin-top: 10px;
+          margin-bottom: none;}
+.y-axis-title {
+  color:#666666;
+  display: flex;
+    text-align: left;
+    transform: rotate(-90deg);
+    position: relative;
+    left: -53%;
+    bottom: 10%;
+    align-content: stretch;
+    margin-bottom: 10%;
+        }
+.results{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 32px;
+}
+table{
+  width: 95%;
+  height: 300px;
+}
+.totals{
+  color: rgba(159,218,64,1.0);
+  height: 17%;
+
+}
+.events{
+  height: 15%;
+}
+td{
+  border: 1px solid white; /* Add borders for illustration */
+  text-align: center; /* Center align content within cells */
+}
+th{
+  height: 4%;
+  border: 1px solid white; /* Add borders for illustration */
+  text-align: top; /* Center align content within cells */
+}
+
+#button-container{
+  display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    background: none;
+        }
+#button-container button {
+  background: none; /* Remove the default background color for all buttons within #button-container */
+  border: 1px solid #000; /* Add a border to the buttons (optional) */
+  padding: 10px; /* Add padding for better button appearance (optional) */
+  cursor: pointer; /* Change cursor style on hover */
+  color: rgba(159,218,64,1.0);
+}
+
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
@@ -75,7 +133,7 @@ justify-content: center;
 <div class="w3-top">
   <div class="w3-bar center w3-black w3-card">
     <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">The Money Thing</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-large">CalSpend</a>
     </div>
   </div>
 </div>
@@ -93,8 +151,8 @@ justify-content: center;
 
 
   <!-- The Band Section -->
-  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="band">
-    <h2 class="w3-wide">The Money thing</h2>
+  <div class="w3-container w3-content w3-center" style="max-width:800px; margin-bottom: 64px;" id="band">
+    <h2 class="w3-wide">CalSpend</h2>
     <p class="w3-opacity"><i>Spend Wiser</i></p>
     <p class="w3-justify center">Finances of Today, Powered by Techonology of Tomorrow.</p>
     <div class="w3-row w3-padding-32">
@@ -112,7 +170,7 @@ justify-content: center;
 
   <!-- The Tour Section -->
   <div class="w3-black" id="tour">
-    <div class="w3-container w3-content w3-padding-64" style="max-width:800px">
+    <div class="w3-container w3-content" style="max-width:800px; margin-top: px;">
       <h2 class="w3-wide w3-center">Your Spending</h2>
       <p class="w3-opacity w3-center"><i>Spending habbits based on your calendar</i></p><br>
 
@@ -134,11 +192,11 @@ justify-content: center;
               <li class="center">
             <input type = "submit" value="Upload"> 
               </li>
-          </form>           
+            </form>           
       </ul>
 
-      <div class="w3-row-padding w3-padding-32" style="margin:0 -16px">
-        <div class="w3-third w3-margin-bottom">
+      <div style="margin:0 -16px">
+        <div class="w3-third ">
             
       </div>
     </div>
@@ -146,37 +204,170 @@ justify-content: center;
 
 
   <!-- The Contact Section -->
-  <div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
-    <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+  <div class="w3-container w3-content w3-padding" style="max-width:800px" id="contact">
+    <div id="chart-container">
+    <h2 class="y-axis-title">Total Spending</h2>
+    <canvas id="myChart" style="width:150%;max-width:1200px"></canvas>
+    <h2 class="x-axis-title">Timeline</h2>
+    <div id="button-container">
+      <button data-months="1">1 Month</button>
+      <button data-months="2">2 Months</button>
+      <button data-months="4">4 Months</button>
+      <button data-months="6">6 Months</button>
+    </div>
+    </div>
     <script>
-    const xValues = [50,60,70,80,90,100,110,120,130,140,150];
-    const yValues = [7,8,8,9,9,9,10,11,14,14,15];
+document.addEventListener('DOMContentLoaded', function () {
+  const buttons = document.querySelectorAll('#button-container button');
+  buttons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      const months = button.getAttribute('data-months');
+      updatemonth(parseInt(months));
+    });
+  });
+});
 
-    new Chart("myChart", {
-        type: "line",
-        data: {
-            labels: xValues,
-            datasets: [{
-                fill: false,
-                lineTension: 0,
-                backgroundColor: "rgba(159,218,64,1.0)",
-                borderColor: "rgba(96,168,48,0.5)",
-                data: yValues
-            }]
+function sliceArray(arr,stp) {
+  const result = [];
+  for (let i = 0; i < arr.length; i += stp) {
+    result.push(arr[i]);
+  }
+  return result;
+}
+
+            var dateCell = {{d | safe}}.slice(',');
+            var nameCell = {{n | safe}}.slice(',');
+            var amountCell = {{a | safe}};
+
+            console.log("Date from table:", dateCell.slice(1,10));
+            console.log("Name from table:", nameCell.slice(1,10));
+            console.log("Amount from table:", amountCell.slice(1,10));
+
+            // Split the dateCell string into an array of dates (xValues)
+            var xValues = sliceArray(dateCell,1);
+
+            // Split the amountCell string into an array of amounts (yValues)
+            var yValues = sliceArray(amountCell,1);
+
+            function updatemonth(months){
+              xValues = sliceArray(dateCell, months);
+              yValues = sliceArray(amountCell, months);
+              console.log("xvale", xValues)
+              console.log("yvale", yValues)
+              new Chart("myChart", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "rgba(159,218,64,1.0)",
+                        borderColor: "rgba(96,168,48,0.5)",
+                        data: yValues
+                    }]
+                },
+                options: {
+          title: {
+            display: true,
+            text: 'Your Spending',
+            fontSize: 28,
+          },
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{gridLines: { color: "#666666" }}],
+              yAxes: [{gridLines: { color: "#666666" },
+                ticks: {
+                  min: 0,
+                  max: max,
+                  maxTicksLimit: 10
+                }}]
+          }  
         },
-        options: {
-        legend: {display: false},
-        scales: {
-        yAxes: [{ticks: {min: 6, max:16}}],
-        }
-        }
-    });    
+        })
+            }
+
+            console.log("xvale", xValues)
+            console.log("yvale", yValues)
+            const max = yValues.reduce((a, b) => Math.max(a, b), -Infinity) + 150;
+            console.log('max',max)
+
+            new Chart("myChart", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "rgba(159,218,64,1.0)",
+                        borderColor: "rgba(96,168,48,0.5)",
+                        data: yValues
+                    }]
+                },
+                options: {
+          title: {
+            display: true,
+            text: 'Your Spending',
+            fontSize: 28,
+          },
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{gridLines: { color: "#666666" }}],
+              yAxes: [{gridLines: { color: "#666666" },
+                ticks: {
+                  min: 0,
+                  max: max,
+                  maxTicksLimit: 10
+                }}]
+          }  
+        },
+        });     
     </script>
+  </div>
+
+  <h2 class="w3-wide w3-center" style="margin-top: 64px; margin-bottom: none;">Insights into the Future</h2>
+
+
+  <div class="results">
+    <table>
+      <tr>
+        <th>Sun </th>
+        <th>Mon </th>
+        <th>Tue </th>
+        <th>Wed </th>
+        <th>Thu </th>
+        <th>Fri </th>
+        <th>Sat </th>
+      </tr>
+      <tr class="events">
+        <td> 4 events </td>
+        <td>5 events</td>
+        <td>6 events</td>
+        <td>6 events</td>
+        <td>3 events</td>
+        <td>8 events</td>
+        <td>2 events</td>
+      </tr>
+      <tr class="totals">
+        <td>$ {{s1}}</td>
+        <td>$ {{s2}}</td>
+        <td>$ {{s3}}</td>
+        <td>$ {{s4}}</td>
+        <td>$ {{s5}}</td>
+        <td>$ {{s6}}</td>
+        <td>$ {{s7}}</td>
+      </tr>
+
+    </table>
   </div>
   <footer>
     <p> some more content here</p>
     {{name1}}
-    {{name2}}
+    {{name2}} 
+    {{m}}
   </footer>
   
 <!-- End Page Content -->

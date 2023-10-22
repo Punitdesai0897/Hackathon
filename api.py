@@ -25,19 +25,19 @@ spending_df = preprocessSpend()
 preprocess_data(calendar_df, spending_df, tokenizer)
 model_inputs, Y_TEST, next_weeks = prepare_model_inputs(calendar_df, get_data, tokenizer)
 predicted_spending = loaded_model.predict(model_inputs)
-for i in range(0,len(predicted_spending[0])-1):
-     if predicted_spending[0][i] > 0:
-          predicted_spending[0][i] = predicted_spending[0][i]
+predicted_spending = predicted_spending[0]
+for i in range(0,len(predicted_spending)):
+     if predicted_spending[i] > 0:
+          predicted_spending[i] = round(predicted_spending[i],2)
      else:
-          predicted_spending[0][i] = 0
+          predicted_spending[i] = 0
 print(Y_TEST)
-print(predicted_spending)
 #next_weeks =  extractor()
 print('next',next_weeks)
 
 @app.route('/') 
 def main(): 
-    return render_template("index.html", name1 ='', name2 ='',d='',a='',m='')
+    return render_template("index.html", name1 ='', name2 ='',d='',a='',m='',spendings='')
      
 
 @app.route('/', methods = ['POST']) 
@@ -55,7 +55,7 @@ def success():
             files[0].save(os.path.join(app.config['UPLOAD_FOLDER'], 'cal file'))
             files[1].save(os.path.join(app.config['UPLOAD_FOLDER'], 'spending file'))
             #return render_template("index.html", name1 = files[0].filename, name2 = files[1].filename)
-            return render_template("index.html", name1 = files[0].filename, name2 = files[1].filename,d=reduced_data[0], n=parsed_data[0][1],a=reduced_data[1])
+            return render_template("index.html", name1 = files[0].filename, name2 = files[1].filename,d=reduced_data[0], n=parsed_data[0][1],a=reduced_data[1],s1=predicted_spending[0],s2=predicted_spending[1],s3=predicted_spending[2],s4=predicted_spending[3],s5=predicted_spending[4],s6=predicted_spending[5],s7=predicted_spending[6])
         else:
             return render_template("index.html", name1 ='', name2 ='',d='', n='',a='')
         
