@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY . ./
 
-RUN pip install flask gunicorn CurrencyConverter
+RUN pip install flask gunicorn
 
 CMD gunicorn --bind :$PORT app:api

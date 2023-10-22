@@ -23,8 +23,8 @@ def get_data():
     parsed_data = parse_csv(csv_file_path)
     dates = parsed_data[0][0]
     amounts = parsed_data[0][2]
-    reduced_data = reduce_months(dates,amounts,3)
-    return render_template('test.html',d=parsed_data[0][0], n=parsed_data[0][1],a=parsed_data[0][2])
+    reduced_data = reduce_months(dates,amounts,1)
+    return render_template('test.html',d=reduced_data[0], n=parsed_data[0][1],a=reduced_data[1])
 
 if __name__ == '__main__':
     app.run(debug=True)
