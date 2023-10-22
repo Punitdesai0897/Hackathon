@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--
+
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<title>Your Data</title>
+</head>
+<body>
+
+    <div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
+        <canvas id="myChart" style="width:100%;max-width:700px; border: 2px solid;"></canvas>
+        <script>
+           
+            // Use date, name, and amount in your JavaScript code as needed
+            const xValues = [50,60,70,80,90,100,110,120,130,140,150];
+            const yValues = [7,8,8,9,9,9,10,11,14,14,15];
+    
+            new Chart("myChart", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "rgba(159,218,64,1.0)",
+                        borderColor: "rgba(96,168,48,0.5)",
+                        data: yValues
+                    }]
+                },
+                options: {
+                    legend: {display: false},
+                    scales: {
+                        yAxes: [{ticks: {min: 6, max: 16}}],
+                    }
+                }
+            });    
+        </script>
+    </div>
+    <table>
+        <tr>
+            <td>
+                {{d}}
+            </td>
+            <td>
+                {{n}}
+            </td>
+            <td>
+                {{a}}
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Your Data</title>
+</head>
+<body>
+    <div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
+        <canvas id="myChart" style="width:100%;max-width:700px; border: 2px solid;"></canvas>
+        <script>
+            var dateCell = {{d | safe}}.slice(',');
+            var nameCell = {{n | safe}}.slice(',');
+            var amountCell = {{a | safe}};
+
+            console.log("Date from table:", dateCell.slice(1,10));
+            console.log("Name from table:", nameCell.slice(1,10));
+            console.log("Amount from table:", amountCell.slice(1,10));
+
+            // Split the dateCell string into an array of dates (xValues)
+            const xValues = dateCell.slice(0,10);
+
+            // Split the amountCell string into an array of amounts (yValues)
+            const yValues = amountCell.slice(0,10);
+
+            console.log("xvale", xValues)
+            console.log("yvale", yValues)
+
+            new Chart("myChart", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "rgba(159,218,64,1.0)",
+                        borderColor: "rgba(96,168,48,0.5)",
+                        data: yValues
+                    }]
+                },
+                options: {
+                    legend: {display: false},
+                    scales: {
+                        yAxes: [{ticks: {min: 0, max: 20}},
+                    ],
+                },
+            },
+        });    
+        </script>
+    </div>
+    <table>
+        <tr>
+            <td id="date">{{d}}</td>
+            <td id="name">{{n}}</td>
+            <td id="amount">{{a}}</td>
+        </tr>
+    </table>
+</body>
+</html>
